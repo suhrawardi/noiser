@@ -4,8 +4,9 @@ version = "0.1.0"
 authors = ["jarra <suhrawardi@gmail.com>"]
 
 [dependencies]
-vst = "0.0.1"
+vst = "0.2.1"
 # vst = { git = "https://github.com/rust-dsp/rust-vst" }
+rand = "0.7.3"
 
 [lib]
 name = "noiser"

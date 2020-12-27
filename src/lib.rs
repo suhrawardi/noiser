@@ -2,9 +2,12 @@
 extern crate vst;
 
 use vst::plugin::{Category, Info, Plugin};
+use vst::buffer::AudioBuffer;
 
 #[derive(Default)]
-struct Noiser;
+struct Noiser {
+    mvavg: u8
+}
 
 impl Plugin for Noiser {
     fn get_info(&self) -> Info {
@@ -17,9 +20,21 @@ impl Plugin for Noiser {
 
             outputs: 2,
 
-            category: Category::Effect
+            category: Category::Effect,
 
             ..Default::default()
+        }
+    }
+
+    fn process(&mut self, buffer: &mut AudioBuffer<f32>) {
+        let (_input_buffer, mut output_buffer) = buffer.split();
+
+        self.mvavg = 0;
+
+        for output_channel in output_buffer.into_iter() {
+            for output_sample in output_channel {
+                *output_sample = (rand::random::<f32>() - 0.5f32) * 2f32;
+            }
         }
     }
 }
